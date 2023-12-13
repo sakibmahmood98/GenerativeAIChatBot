@@ -2,6 +2,7 @@
 using Microsoft.SemanticKernel;
 using Microsoft.SemanticKernel.Memory;
 using Microsoft.SemanticKernel.Plugins.Memory;
+using System;
 
 namespace test_generative_ai.Managers
 {
@@ -10,12 +11,12 @@ namespace test_generative_ai.Managers
     {
         private readonly Kernel _kernel;
 #pragma warning disable SKEXP0003 // Type is for evaluation purposes only and is subject to change or removal in future updates. Suppress this diagnostic to proceed.
-        private readonly SemanticTextMemory _semanticTextMemory;
+        private readonly ISemanticTextMemory _semanticTextMemory;
 #pragma warning restore SKEXP0003 // Type is for evaluation purposes only and is subject to change or removal in future updates. Suppress this diagnostic to proceed.
         private readonly OpenAIPromptExecutionSettings _executionSettings;
 
 #pragma warning disable SKEXP0003 // Type is for evaluation purposes only and is subject to change or removal in future updates. Suppress this diagnostic to proceed.
-        public OpenAIPromptManager(Kernel kernel, OpenAIPromptExecutionSettings executionSettings, SemanticTextMemory semanticTextMemory)
+        public OpenAIPromptManager(Kernel kernel, OpenAIPromptExecutionSettings executionSettings, ISemanticTextMemory semanticTextMemory)
 #pragma warning restore SKEXP0003 // Type is for evaluation purposes only and is subject to change or removal in future updates. Suppress this diagnostic to proceed.
         {
             _kernel = kernel;
@@ -25,24 +26,6 @@ namespace test_generative_ai.Managers
 
         public async Task<string> ChatResultFunctionAsync(KernelArguments argument)
         {
-#pragma warning disable SKEXP0003 // Type is for evaluation purposes only and is subject to change or removal in future updates. Suppress this diagnostic to proceed.
-#pragma warning disable IDE0059 // Unnecessary assignment of a value
-#pragma warning disable SKEXP0028 // Type is for evaluation purposes only and is subject to change or removal in future updates. Suppress this diagnostic to proceed.
-       //     IMemoryStore store = await SqliteMemoryStore.ConnectAsync("memories.sqlite");
-#pragma warning restore SKEXP0028 // Type is for evaluation purposes only and is subject to change or removal in future updates. Suppress this diagnostic to proceed.
-#pragma warning restore IDE0059 // Unnecessary assignment of a value
-#pragma warning restore SKEXP0003 // Type is for evaluation purposes only and is subject to change or removal in future updates. Suppress this diagnostic to proceed.
-
-#pragma warning disable SKEXP0052 // Type is for evaluation purposes only and is subject to change or removal in future updates. Suppress this diagnostic to proceed.
-#pragma warning restore SKEXP0052 // Type is for evaluation purposes only and is subject to change or removal in future updates. Suppress this diagnostic to proceed.
-
-           // await _semanticTextMemory.SaveInformationAsync("brain-station-23", id: "info1", text: "My name is Andrea");
-
-#pragma warning disable IDE0059 // Unnecessary assignment of a value
-#pragma warning disable SKEXP0052 // Type is for evaluation purposes only and is subject to change or removal in future updates. Suppress this diagnostic to proceed.
-            //var memoryPlugin = _kernel.ImportPluginFromObject(new TextMemoryPlugin(_semanticTextMemory));
-#pragma warning restore SKEXP0052 // Type is for evaluation purposes only and is subject to change or removal in future updates. Suppress this diagnostic to proceed.
-#pragma warning restore IDE0059 // Unnecessary assignment of a value
 
 #pragma warning disable SKEXP0003 // Type is for evaluation purposes only and is subject to change or removal in future updates. Suppress this diagnostic to proceed.
             MemoryQueryResult? lookup = await _semanticTextMemory.GetAsync("brain-station-23", "info1");
@@ -59,10 +42,8 @@ namespace test_generative_ai.Managers
             ChatBot:";
 
 #pragma warning disable SKEXP0052 // Type is for evaluation purposes only and is subject to change or removal in future updates. Suppress this diagnostic to proceed.
-            var memoryPlugin = _kernel.ImportPluginFromObject(new TextMemoryPlugin(_semanticTextMemory));
+            _kernel.ImportPluginFromObject(new TextMemoryPlugin(_semanticTextMemory));
 #pragma warning restore SKEXP0052 // Type is for evaluation purposes only and is subject to change or removal in future updates. Suppress this diagnostic to proceed.
-
-           // var data = await _kernel.InvokeAsync(memoryPlugin["Recall"], argument);
 
             var chatFunction = _kernel.CreateFunctionFromPrompt(skPrompt, _executionSettings);
 
