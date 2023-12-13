@@ -1,6 +1,7 @@
 ﻿using GenerativeAIChatBot.Models.Entities;
 using GenerativeAIChatBot.Persistence.Repositories;
 using Microsoft.SemanticKernel;
+using Microsoft.SemanticKernel.Plugins.Memory;
 
 namespace test_generative_ai.Managers
 {
@@ -20,12 +21,19 @@ namespace test_generative_ai.Managers
 
             var history = _historyRepository.GetHistoriesTextByEmail(email) ?? "";
 
+#pragma warning disable SKEXP0052 // Type is for evaluation purposes only and is subject to change or removal in future updates. Suppress this diagnostic to proceed.
             var arguments = new KernelArguments()
             {
-                ["history"] = history
+                ["history"] = history,
+                [TextMemoryPlugin.CollectionParam] = "brain-station-23",
+                [TextMemoryPlugin.LimitParam] = "2",
+                [TextMemoryPlugin.RelevanceParam] = "0.79",
             };
+#pragma warning restore SKEXP0052 // Type is for evaluation purposes only and is subject to change or removal in future updates. Suppress this diagnostic to proceed.
 
-            arguments["userInput"] = userInput;
+           // arguments["userInput"] = userInput;
+
+            arguments["input"] = userInput;
 
             var answer = await _promptManager.ChatResultFunctionAsync(arguments);
 
