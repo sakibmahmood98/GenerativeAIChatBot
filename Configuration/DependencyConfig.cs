@@ -2,13 +2,17 @@
 using Microsoft.SemanticKernel.Connectors.AI.OpenAI;
 using Microsoft.SemanticKernel;
 using test_generative_ai.Managers;
+using GenerativeAIChatBot.Persistence.Contexts;
+using GenerativeAIChatBot.Persistence.Repositories;
 
 namespace test_generative_ai.Configuration
 {
     public static class DependencyConfig
     {
-        public static void AddDependencies(this IServiceCollection services)
+        public static IServiceCollection AddDependencies(this IServiceCollection services)
         {
+            services.AddDbContext<StoreContext>();
+
             services.AddSingleton<Kernel>(provider =>
             {
                 var kernelBuilder = new KernelBuilder();
@@ -26,8 +30,12 @@ namespace test_generative_ai.Configuration
                 TopP = 0.5
             });
 
+            services.AddScoped<IHistoryRepository, HistoryRepository>();
+
             services.AddTransient<IPromptManager, OpenAIPromptManager>();
             services.AddTransient<IChatAIManager, ChatAIManager>();
+
+            return services;
         }
     }
 }
