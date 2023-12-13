@@ -22,7 +22,7 @@ namespace test_generative_ai.Configuration
             {
                 var kernelBuilder = new KernelBuilder();
                 var model = "gpt-3.5-turbo";
-                var apiKey = "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";
+                var apiKey = "";
                 var orgId = "";
                 kernelBuilder.AddOpenAIChatCompletion(model, apiKey, orgId)
                             .AddOpenAITextEmbeddingGeneration(model, apiKey, orgId);
