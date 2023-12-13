@@ -24,8 +24,10 @@ namespace test_generative_ai.Configuration
                 var model = "gpt-3.5-turbo";
                 var apiKey = "";
                 var orgId = "";
+#pragma warning disable SKEXP0011 // Type is for evaluation purposes only and is subject to change or removal in future updates. Suppress this diagnostic to proceed.
                 kernelBuilder.AddOpenAIChatCompletion(model, apiKey, orgId)
                             .AddOpenAITextEmbeddingGeneration(model, apiKey, orgId);
+#pragma warning restore SKEXP0011 // Type is for evaluation purposes only and is subject to change or removal in future updates. Suppress this diagnostic to proceed.
 
                 return kernelBuilder.Build();
             });
@@ -42,13 +44,15 @@ namespace test_generative_ai.Configuration
 
 
 #pragma warning disable SKEXP0028 // Type is for evaluation purposes only and is subject to change or removal in future updates. Suppress this diagnostic to proceed.
-                IMemoryStore store = SqliteMemoryStore.ConnectAsync("C:\\BS23\\Personal\\generative-ai-chatbot\\Database\\generativeai.db").GetAwaiter().GetResult();
+                IMemoryStore store = SqliteMemoryStore.ConnectAsync("").GetAwaiter().GetResult();
 #pragma warning restore SKEXP0028 // Type is for evaluation purposes only and is subject to change or removal in future updates. Suppress this diagnostic to proceed.
 
                 var model = "text-embedding-ada-002";
-                var apiKey = "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";
+                var apiKey = "";
 
+#pragma warning disable SKEXP0011 // Type is for evaluation purposes only and is subject to change or removal in future updates. Suppress this diagnostic to proceed.
                 var embeddingGenerator = new OpenAITextEmbeddingGeneration(model, apiKey);
+#pragma warning restore SKEXP0011 // Type is for evaluation purposes only and is subject to change or removal in future updates. Suppress this diagnostic to proceed.
 
                 SemanticTextMemory textMemory = new(store, embeddingGenerator);
 
