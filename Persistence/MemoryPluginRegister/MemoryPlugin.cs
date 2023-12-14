@@ -15,9 +15,9 @@ namespace GenerativeAIChatBot.Persistence.MemoryPluginRegister
             _semanticTextMemory = semanticTextMemory;
         }
 
-        public void RegisterMemoryPlugin()
+        public IKernelPlugin GetTextMemoryPlugin()
         {
-            _kernel.ImportPluginFromObject(new TextMemoryPlugin(_semanticTextMemory));
+            return _kernel.ImportPluginFromObject(new TextMemoryPlugin(_semanticTextMemory));
         }
     }
 }

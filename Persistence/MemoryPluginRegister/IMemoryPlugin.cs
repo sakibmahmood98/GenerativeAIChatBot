@@ -1,7 +1,9 @@
-﻿namespace GenerativeAIChatBot.Persistence.MemoryPluginRegister
+﻿using Microsoft.SemanticKernel;
+
+namespace GenerativeAIChatBot.Persistence.MemoryPluginRegister
 {
     public interface IMemoryPlugin
     {
-        void RegisterMemoryPlugin();
+        IKernelPlugin GetTextMemoryPlugin();
     }
 }

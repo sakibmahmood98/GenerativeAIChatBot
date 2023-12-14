@@ -25,7 +25,7 @@ namespace test_generative_ai.Configuration
 
             services.AddDbContext<StoreContext>();
 
-            services.AddSingleton<Kernel>(provider =>
+            services.AddTransient<Kernel>(provider =>
             {
                 var kernelBuilder = new KernelBuilder();
                 var model = "gpt-3.5-turbo";
@@ -36,7 +36,7 @@ namespace test_generative_ai.Configuration
                 return kernelBuilder.Build();
             });
 
-            services.AddSingleton<ISemanticTextMemory>(provider =>
+            services.AddTransient<ISemanticTextMemory>(provider =>
             {
                 var model = "text-embedding-ada-002";
                 var apiKey = "";
@@ -60,14 +60,10 @@ namespace test_generative_ai.Configuration
                 TopP = 0.5
             });
 
-            services.AddSingleton<IMemoryPlugin>(provider => MemoryPluginFactory.CreateMemoryPlugin(provider));
-
             services.AddScoped<IHistoryRepository, HistoryRepository>();
 
+            services.AddTransient<IMemoryPlugin, MemoryPlugin>();
             services.AddTransient<IChatAIManager, ChatAIManager>();
-
-            var serviceProvider = services.BuildServiceProvider();
-            serviceProvider.GetService<IMemoryPlugin>();
 
             return services;
         }

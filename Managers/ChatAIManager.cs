@@ -70,25 +70,20 @@ namespace test_generative_ai.Managers
 
         private async Task<string> SearchMemory(string MemoryCollectionName, string findMemory)
         {
-            Console.WriteLine("Searching for memories relevant to:" + findMemory);
+            IKernelPlugin plugin = _memoryPlugin.GetTextMemoryPlugin();
 
-            var result = await _kernel.InvokeAsync(_kernel.Plugins["TextMemoryPlugin"]["Recall"], new("Relevant info for user prompt:" + findMemory)
+            var result = await _kernel.InvokeAsync(plugin["Recall"], new("Relevant info for user prompt:" + findMemory)
             {
                 [TextMemoryPlugin.CollectionParam] = MemoryCollectionName,
                 [TextMemoryPlugin.LimitParam] = "2",
                 [TextMemoryPlugin.RelevanceParam] = "0.75",
             });
-            string data = result.GetValue<string>();
+            string data = result.GetValue<string>() ?? "";
 
             if (string.IsNullOrEmpty(data))
             {
                 throw new NoMatchFoundException("No relevant memory found");
             }
-/*            int start = data.IndexOf(":") + 1;
-            int end = data.IndexOf("\\r\\n", start);
-            string caseStudy = data.Substring(start, end - start);*/
-
-            Console.WriteLine($"Relevant memory found = Case Study:{data}");
 
             return data;
         }
